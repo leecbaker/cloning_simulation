@@ -1,6 +1,8 @@
 cloning_simulation
 ==================
 
+Functionality
+-------
 Simulates sample of barcoded cells.
 
 We start with 300,000 cells barcoded with one of 14000 unique identifiers. The cells are evenly divided between the identifiers.
@@ -12,3 +14,10 @@ After this, we repeatedly perform the following:
 * Report the number of unique barcodes present in the 300,000 selected cells.
 
 The above is simulated for 25 cycles (or 75 days).
+
+How to run
+------
+Simply run the included simulation file with python:
+```> python simulation.py```
+
+Several configuration parameters are available at the top of the file, including the number of cells, barcodes, cell doubling frequency, etc.
