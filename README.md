@@ -20,4 +20,4 @@ How to run
 Simply run the included simulation file with python:
 ```> python simulation.py```
 
-Several configuration parameters are available at the top of the file, including the number of cells, barcodes, cell doubling frequency, etc.
+Several configuration parameters are available at the top of the file, including the number of cells, barcodes, cell doubling frequency, etc. By default, the script will run 200 simulations, and write the number of remaining barcodes out to a file called 'histogram.csv'.

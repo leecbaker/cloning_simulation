@@ -1,13 +1,14 @@
+#!/usr/bin/python
 # Author: Lee Baker
 # lee@leecbaker.com
 #
-#!/usr/bin/python
 import math
 import random
 import array
 
 total_barcodes = 14000
-num_cells_to_keep_passage = 300000
+num_cells_to_keep_passage = 2000000
+print_messages = False
 
 # all times in hours
 cell_doubling_time = 19
@@ -38,7 +39,8 @@ def grow_for_hours(hours):
 		cells[barcode] = int(round(count * math.exp(exponential_growth_factor * hours)))
 
 	final_cell_count = sum(cells.values())
-	print(" grew for %d hours: from %d to %d cells, with %d barcodes" % (passage_interval, starting_cell_count, final_cell_count, len(cells)))
+	if print_messages:
+		print(" grew for %d hours: from %d to %d cells, with %d barcodes" % (passage_interval, starting_cell_count, final_cell_count, len(cells)))
 
 # pick out 300k random cells to keep, discard the rest
 # cells are randomly picked regardless of barcode
@@ -60,7 +62,8 @@ def passage():
 		else:
 			cells[c] += 1
 
-	print(" passaging reduced %d cells to %d cells with %d unique barcodes" % (starting_cell_count, sum(cells.values()), len(cells)))
+	if print_messages:
+		print(" passaging reduced %d cells to %d cells with %d unique barcodes" % (starting_cell_count, sum(cells.values()), len(cells)))
 
 def run_simulation():
 	global cells
@@ -68,9 +71,25 @@ def run_simulation():
 	cycles = experiment_duration / passage_interval
 
 	for cycle in range(cycles):
-		print("Cycle %3d/%d:" % (cycle+1, cycles))
+		if print_messages:
+			print("Cycle %3d/%d:" % (cycle+1, cycles))
 		grow_for_hours(passage_interval)
 		passage()
-	print("Done. Executed for %.1f days, or %.1f population doublings" % (experiment_duration / 24., experiment_duration / cell_doubling_time))
+	if print_messages:
+		print("Done. Executed for %.1f days, or %.1f population doublings" % (experiment_duration / 24., experiment_duration / cell_doubling_time))
+	return len(cells)
 
-run_simulation()
+def gen_histogram():
+	iterations = 200
+	barcode_counts = []
+	for i in range(iterations):
+		barcode_counts.append(run_simulation())
+
+	f = open('histogram.csv','w')
+	f.write("\n".join([str(ct) for ct in barcode_counts]))
+	f.close()
+
+gen_histogram()
+	
+
+
